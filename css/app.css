@@ -3790,6 +3790,20 @@ body.app .form-select {
   box-shadow: none;
 }
 
+body.app .form-control:disabled,
+body.app input.form-control:disabled,
+body.app textarea.form-control:disabled,
+body.app select.form-control:disabled,
+body.app .form-select:disabled {
+	background-color: var(--bs-secondary-bg)!important;
+}
+
+/* Inputs in input groupt should not enlarge */
+body.app .input-group .form-control,
+body.app .input-group input.form-control {
+	width: 1%;
+}
+
 body.app textarea.form-control {
   height: auto;
   min-height: 96px;
@@ -4201,6 +4215,11 @@ body.app .btn-group > .btn:first-child {
 body.app .btn-group > .btn:last-child {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+}
+
+/* Button group + dorpdown */
+body.app .input-group .btn-group.dropdown {
+	overflow: visible;
 }
 
 /* Dropdown toggle — keep aligned with btn family */
@@ -5980,6 +5999,7 @@ body.app .header-wrap > .header-button {
   font-size: 13px;
   color: var(--m-text-muted, #475569);
   line-height: 1.45;
+  word-break: break-word;
 }
 
 .toast__close {
@@ -6316,6 +6336,7 @@ body.app .skeleton-row:last-child {
 
 .cmdk-footer kbd {
   background: var(--m-surface, #fff);
+  color: var(--m-accent);
   border: 1px solid var(--m-border, #e4e7ec);
   border-radius: 3px;
   padding: 1px 5px;
@@ -7294,6 +7315,7 @@ body.app .invoice-doc__brand .logo-mark,
 body.app .error-card .logo-mark,
 body.app .cmdk-item__icon {
   background: linear-gradient(135deg, var(--m-accent) 0%, var(--m-accent-hover) 100%);
+  color: var(--m-accent-soft, #fff);
   box-shadow: 0 4px 12px rgba(var(--m-accent-rgb), 0.35);
 }
 
@@ -7343,16 +7365,16 @@ body.app .cmdk-item__icon {
   box-shadow: 0 24px 48px rgba(15, 23, 42, 0.18);
   padding: 16px;
   width: 240px;
-  opacity: 0;
   transform: translateY(8px) scale(0.96);
   pointer-events: none;
   transition: opacity 200ms ease, transform 200ms ease;
   transform-origin: bottom right;
   font-family: var(--m-font, system-ui);
+  display: none;
 }
 
 .theme-switcher.is-open .theme-switcher__panel {
-  opacity: 1;
+  display: block;
   transform: translateY(0) scale(1);
   pointer-events: auto;
 }
@@ -8315,6 +8337,7 @@ body.app .circular-progress__label span {
   margin-top: 2px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  word-break: break-word;
 }
 
 /* Dashboard loading skeletons --------------------------------- */

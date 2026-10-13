@@ -873,7 +873,15 @@ function initThemeSwitcher() {
   const saved = (function () {
     try { return localStorage.getItem(STORAGE_KEY); } catch (_) { return null; }
   })();
-  let active = THEMES.find((t) => t.id === saved) || THEMES[0];
+  //Find css class theme setted
+  const cssTheme = (function () {
+    for(const t of THEMES){
+      if (body.classList.contains('theme-'+t.id))
+        return t;
+	  }
+	  return null;
+  })();
+  let active = (THEMES.find((t) => t.id === saved) || cssTheme )|| THEMES[0];
   applyTheme(active.id);
 
   // Build the floating widget
@@ -965,7 +973,7 @@ function initToastSystem() {
   function show({ title = '', message = '', type = 'info', duration = 4000 } = {}) {
     const t = type in ICONS ? type : 'info';
     const el = document.createElement('div');
-    el.className = `toast toast--${t}`;
+    el.className = `toast toast--${t} show`; //show class needed
     el.setAttribute('role', t === 'error' ? 'alert' : 'status');
     el.innerHTML = `
       <span class="toast__icon"><i class="fa-solid ${ICONS[t]}" aria-hidden="true"></i></span>
@@ -1091,9 +1099,11 @@ function initCommandPalette() {
     for (const [section, items] of groups) {
       html += `<li class="cmdk-section">${section}</li>`;
       for (const c of items) {
+        //if no href do not set attribute on element. Old version ${c.href ? `href="${c.href}"` : 'href="#"'}
+        //with href="#" c.action will not execute
         html += `
           <li>
-            <a class="cmdk-item${idx === activeIndex ? ' is-active' : ''}" data-idx="${idx}" ${c.href ? `href="${c.href}"` : 'href="#"'}>
+            <a class="cmdk-item${idx === activeIndex ? ' is-active' : ''}" data-idx="${idx}" ${c.href ? `href="${c.href}"` : ''}>
               <span class="cmdk-item__icon"><i class="fa-solid ${c.icon}" aria-hidden="true"></i></span>
               <div class="cmdk-item__body">
                 <div class="cmdk-item__title">${escapeHtml(c.title)}</div>
@@ -1307,7 +1317,8 @@ function initSidebarToggle() {
   // Tapping a nav link on mobile should close the drawer.
   $$('.menu-sidebar .navbar__list a, .menu-sidebar .navbar__sub-list a').forEach((link) => {
     on(link, 'click', () => {
-      if (isMobile()) closeMobile();
+      //do not close menu if element has sub elements
+      if (isMobile()&&(! e.currentTarget.classList.contains("js-arrow"))) closeMobile();
     });
   });
 
